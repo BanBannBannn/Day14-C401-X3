@@ -38,3 +38,45 @@ class RetrievalEvaluator:
             "avg_mrr": total_mrr / count,
             "sample_size": count
         }
+
+    @staticmethod
+    def _token_overlap(text_a: str, text_b: str) -> float:
+        """Tỉ lệ token của text_a xuất hiện trong text_b (proxy không cần LLM)."""
+        tokens_a = set(text_a.lower().split())
+        tokens_b = set(text_b.lower().split())
+        if not tokens_a:
+            return 0.0
+        return len(tokens_a & tokens_b) / len(tokens_a)
+
+    async def score(self, _case: dict, _resp: dict) -> dict:
+        # ── Retrieval metrics ─────────────────────────────────────────────────
+        # expected_ids: source doc được ground truth khai báo trong golden_set
+        # retrieved_ids: danh sách sources agent thực sự trả về
+        expected_source = _case.get("metadata", {}).get("source_doc", "")
+        retrieved_sources = _resp.get("metadata", {}).get("sources", [])
+
+        expected_ids = [expected_source] if expected_source else []
+        hit_rate = self.calculate_hit_rate(expected_ids, retrieved_sources)
+        mrr = self.calculate_mrr(expected_ids, retrieved_sources)
+
+        # ── Faithfulness ──────────────────────────────────────────────────────
+        # Đo mức độ câu trả lời bám vào contexts đã retrieve được
+        # (proxy: % token của answer xuất hiện trong contexts)
+        answer = _resp.get("answer", "")
+        contexts_text = " ".join(_resp.get("contexts", []))
+        faithfulness = self._token_overlap(answer, contexts_text)
+
+        # ── Relevancy ─────────────────────────────────────────────────────────
+        # Đo contexts retrieve được có khớp với ground truth context không
+        # (proxy: % token của expected context xuất hiện trong retrieved contexts)
+        expected_context = _case.get("context", "")
+        relevancy = self._token_overlap(expected_context, contexts_text)
+
+        return {
+            "faithfulness": round(faithfulness, 4),
+            "relevancy": round(relevancy, 4),
+            "retrieval": {
+                "hit_rate": hit_rate,
+                "mrr": mrr,
+            },
+        }
