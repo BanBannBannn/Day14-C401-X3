@@ -4,29 +4,45 @@ import os
 import time
 from engine.runner import BenchmarkRunner
 from agent.main_agent import MainAgent
+from agent.agent_ver2 import AgentImproveV2
+from engine.llm_judge import LLMJudge
+from engine.retrieval_eval import RetrievalEvaluator
+
+# class ExpertEvaluator:
+#     async def score(self, _case, _resp):
+#         return {
+#             "faithfulness": 0.9,
+#             "relevancy": 0.8,
+#             "retrieval": {"hit_rate": 1.0, "mrr": 0.5}
+#         }
 
 
-class ExpertEvaluator:
-    async def score(self, _case, _resp):
-        return {
-            "faithfulness": 0.9,
-            "relevancy": 0.8,
-            "retrieval": {"hit_rate": 1.0, "mrr": 0.5}
-        }
-
-
-class MultiModelJudge:
-    async def evaluate_multi_judge(self, _q, _a, _gt):
-        return {
-            "final_score": 4.5,
-            "agreement_rate": 0.8,
-            "reasoning": "Cả 2 model đồng ý đây là câu trả lời tốt."
-        }
+# class MultiModelJudge:
+#     async def evaluate_multi_judge(self, _q, _a, _gt):
+#         return {
+#             "final_score": 4.5,
+#             "agreement_rate": 0.8,
+#             "reasoning": "Cả 2 model đồng ý đây là câu trả lời tốt."
+#         }
 
 
 # ─────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────
+
+def _load_dataset(path: str) -> list:
+    """Đọc JSONL linh hoạt: hỗ trợ cả 1-object-per-line lẫn multi-line JSON."""
+    with open(path, "r", encoding="utf-8") as f:
+        content = f.read().replace("\\n", "\n").strip()
+    decoder = json.JSONDecoder()
+    results, idx = [], 0
+    while idx < len(content):
+        obj, end = decoder.raw_decode(content, idx)
+        results.append(obj)
+        idx = end
+        while idx < len(content) and content[idx] in " \t\n\r":
+            idx += 1
+    return results
 
 def _percentile(data: list, p: float) -> float:
     if not data:
@@ -178,14 +194,16 @@ async def run_benchmark_with_results(agent_version: str):
         print("❌ Thiếu data/golden_set.jsonl. Hãy chạy 'python data/synthetic_gen.py' trước.")
         return None, None
 
-    with open("data/golden_set.jsonl", "r", encoding="utf-8") as f:
-        dataset = [json.loads(line) for line in f if line.strip()]
+    dataset = _load_dataset("data/golden_set.jsonl")
 
     if not dataset:
         print("❌ File data/golden_set.jsonl rỗng.")
         return None, None
 
-    runner = BenchmarkRunner(MainAgent(), ExpertEvaluator(), MultiModelJudge())
+    if agent_version == "Agent_V1_Base":
+        runner = BenchmarkRunner(MainAgent() , RetrievalEvaluator(), LLMJudge())
+    else:
+        runner = BenchmarkRunner(AgentImproveV2() , RetrievalEvaluator(), LLMJudge())
     results = await runner.run_all(dataset)
 
     summary = {
