@@ -1,0 +1,451 @@
+{
+    "question": "Mục đích chính của thử nghiệm chunking là gì?",
+    "expected_answer": "So sánh các phương pháp chunking khác nhau (kích thước cố định, dựa trên câu, đệ quy) để hiểu cách ranh giới chunk ảnh hưởng đến chất lượng truy xuất, bảo toàn ngữ cảnh và tính hữu ích của các đoạn văn được trả về.",
+    "context": "This report summarizes a small experiment comparing fixed-size chunking, sentence-based chunking, and recursive chunking on internal documentation. The objective was to understand how chunk boundaries affect retrieval quality, context preservation, and the usefulness of returned passages.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Ưu điểm của phương pháp chunking theo kích thước cố định là gì?",
+    "expected_answer": "Dễ triển khai và tạo ra số lượng chunk có thể dự đoán được. Hoạt động khá tốt cho các tài liệu kỹ thuật dài vì mọi chunk đều giữ nguyên dưới kích thước mục tiêu.",
+    "context": "Fixed-size chunking was simple to implement and produced predictable chunk counts. It worked reasonably well for long technical documents because every chunk stayed below a target size.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Nhược điểm của phương pháp chunking theo kích thước cố định là gì?",
+    "expected_answer": "Một số chunk chia các giải thích ở những vị trí khó hiểu, đặc biệt là khi một quy trình trải dài nhiều câu. Điều này đôi khi dẫn đến việc các đoạn văn được trả về chỉ chứa một phần thông tin thay vì hướng dẫn đầy đủ.",
+    "context": "However, some chunks split explanations in awkward places, especially when a procedure spanned multiple sentences. In those cases, search results sometimes returned a fragment that mentioned the right keyword but omitted the actual instruction.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Phương pháp chunking dựa trên câu cải thiện khả năng đọc bằng cách nào?",
+    "expected_answer": "Mỗi chunk khớp với các ranh giới ngôn ngữ tự nhiên, giúp việc kiểm tra thủ công dễ dàng hơn và thường tạo ra kết quả truy xuất mạch lạc hơn cho các tài liệu chính sách ngắn và FAQ.",
+    "context": "Sentence-based chunking improved readability because each chunk aligned with natural language boundaries. This made manual inspection easier and often produced more coherent retrieval results for short policy documents and FAQs.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Hạn chế của chunking dựa trên câu là gì?",
+    "expected_answer": "Kích thước chunk trở nên kém nhất quán hơn và một số phần dày đặc vẫn vượt quá độ dài nhúng lý tưởng khi quá nhiều câu dài được nhóm lại với nhau.",
+    "context": "The downside was that chunk sizes became less consistent, and some dense sections still exceeded ideal embedding length when too many long sentences were grouped together.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Phương pháp chunking đệ quy mang lại sự cân bằng tốt nhất trong thử nghiệm như thế nào?",
+    "expected_answer": "Nó ưu tiên tách theo các ranh giới cấu trúc lớn hơn như đoạn văn, sau đó mới sử dụng các dấu phân cách nhỏ hơn nếu cần, giúp bảo toàn ngữ cảnh trong khi vẫn nằm trong phạm vi kích thước mục tiêu.",
+    "context": "Recursive chunking offered the best balance in the experiment. It first tried to split on larger structural boundaries such as paragraphs, then fell back to smaller separators only when needed. As a result, most chunks preserved context while still staying within the target size range.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Theo kết luận, chiến lược chunking nào được coi là lựa chọn mặc định mạnh mẽ cho tài liệu kỹ thuật hỗn hợp?",
+    "expected_answer": "Chunking đệ quy được coi là lựa chọn mặc định mạnh mẽ cho tài liệu kỹ thuật hỗn hợp.",
+    "context": "The experiment suggests that there is no universal best strategy, but recursive chunking is a strong default for mixed technical documentation.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Chất lượng truy xuất phụ thuộc vào những yếu tố nào?",
+    "expected_answer": "Chất lượng truy xuất phụ thuộc vào cả phong cách của tài liệu và loại câu hỏi mà người dùng thực sự hỏi.",
+    "context": "Teams should still validate this assumption with their own queries, because retrieval quality depends on both the document style and the kinds of questions users actually ask.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Trong thử nghiệm, phương pháp nào tạo ra các đoạn văn hữu ích nhất cho việc trả lời câu hỏi?",
+    "expected_answer": "Chunking đệ quy tạo ra các đoạn văn có tính nhất quán và hữu ích nhất cho việc trả lời câu hỏi trong dữ liệu được thử nghiệm.",
+    "context": "For the tested data, recursive chunking produced the most consistently useful passages for downstream question answering.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Tại sao việc chọn phương pháp chunking lại quan trọng đối với các tài liệu yêu cầu quy trình từng bước?",
+    "expected_answer": "",
+    "context": "",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "out-of-context",
+        "source_doc": "chunking_experiment_report.md"
+    }
+}\n{
+    "question": "Mục tiêu chính của hệ thống RAG này là gì?",
+    "expected_answer": "Mục tiêu là xây dựng một hệ thống RAG để tìm các tài liệu nội bộ liên quan trước khi tạo ra câu trả lời, giảm thiểu ảo giác bằng cách dựa vào văn bản được truy xuất và phân tách rõ ràng ngữ cảnh được truy xuất với tổng hợp được tạo ra.",
+    "context": "Build a retrieval-augmented generation system that finds relevant internal documents before producing an answer. The assistant should reduce hallucinations by grounding its responses in retrieved text and should clearly separate retrieved context from generated synthesis.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Các loại tài liệu nào được hệ thống RAG sử dụng?",
+    "expected_answer": "Hệ thống RAG sử dụng các tệp markdown và văn bản từ các thư mục đáng tin cậy.",
+    "context": "The ingestion pipeline reads markdown and text files from trusted directories, chunks them into semantically coherent segments, and stores those segments with metadata.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Hệ thống xử lý thế nào khi các kết quả truy xuất yếu hoặc mâu thuẫn?",
+    "expected_answer": "Nếu kết quả truy xuất yếu hoặc mâu thuẫn, trợ lý sẽ nói rõ ràng thay vì giả vờ câu trả lời đã hoàn chỉnh.",
+    "context": "If the retrieval results are weak or contradictory, the assistant should say so explicitly instead of pretending the answer is complete.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Các ví dụ về trường hợp thất bại trong kế hoạch đánh giá là gì?",
+    "expected_answer": "Các ví dụ về trường hợp thất bại bao gồm tài liệu lỗi thời được ưu tiên hơn runbook hiện tại, các đoạn nhỏ làm mất các cảnh báo quan trọng hoặc nội dung đa ngôn ngữ làm bối rối mô hình nhúng.",
+    "context": "Example failure cases might include outdated documents outranking current runbooks, small chunks losing critical caveats, or multilingual content confusing the embedding model.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Thông tin nào được bao gồm trong mỗi bản ghi được lưu trữ?",
+    "expected_answer": "Mỗi bản ghi được lưu trữ bao gồm đường dẫn nguồn, định danh tài liệu, loại tài liệu và phòng ban.",
+    "context": "Each stored record includes the source path, document identifier, document type, and department.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Làm thế nào để truy xuất có thể được điều chỉnh cho một nhóm cụ thể?",
+    "expected_answer": "Lớp truy xuất có thể áp dụng bộ lọc siêu dữ liệu khi câu hỏi được giới hạn trong một nhóm cụ thể.",
+    "context": "The retrieval layer embeds user questions, performs similarity search, and optionally applies metadata filters when the question is scoped to a specific team.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Tại sao nhân viên lại lãng phí thời gian trong bối cảnh của hệ thống này?",
+    "expected_answer": "Nhân viên lãng phí thời gian tìm kiếm qua các thư mục tài liệu nội bộ bị ngắt kết nối.",
+    "context": "The company already has documentation spread across markdown handbooks, engineering runbooks, and support notes, but employees waste time searching across disconnected folders.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Ngoài việc trả lời trôi chảy, tiêu chí thành công nào khác cần được xem xét cho trợ lý?",
+    "expected_answer": "Tiêu chí thành công khác bao gồm bằng chứng được truy xuất phải liên quan, có thể truy nguyên và cập nhật.",
+    "context": "Success is not only whether the answer sounds fluent, but whether the retrieved evidence is relevant, traceable, and up to date.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Hệ thống nên xem xét những gì khi bộ tài liệu phát triển?",
+    "expected_answer": "Khi bộ tài liệu phát triển, nhóm nên theo dõi hành vi lập chỉ mục lại, xóa tài liệu và tính mới của nguồn.",
+    "context": "As the document set grows, the team should track re-indexing behavior, document deletion, and source freshness.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Ai là người sở hữu dịch vụ đăng ký người dùng?",
+    "expected_answer": "",
+    "context": "",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "out-of-context",
+        "source_doc": "rag_system_design.md"
+    }
+}\n{
+    "question": "Vector store được sử dụng để hỗ trợ những quy trình nào trong các hệ thống AI thực tế?",
+    "expected_answer": "Vector store được sử dụng để hỗ trợ tìm kiếm ngữ nghĩa, hệ thống đề xuất, quy trình phân cụm và tạo sinh tăng cường truy xuất.",
+    "context": "In practical AI systems, a vector store is often used to support semantic search, recommendation, clustering workflows, and retrieval-augmented generation.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Quy trình tìm kiếm vector phổ biến có bao nhiêu giai đoạn?",
+    "expected_answer": "Quy trình tìm kiếm vector phổ biến có bốn giai đoạn.",
+    "context": "A common vector search pipeline has four stages:",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Điều gì xảy ra nếu các chunk quá nhỏ trong quá trình chuẩn bị dữ liệu cho vector store?",
+    "expected_answer": "Nếu các chunk quá nhỏ, chúng có thể làm mất ngữ cảnh và tạo ra các kết quả khớp không đầy đủ.",
+    "context": "If chunks are too small, they may lose context and produce incomplete matches.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Tại sao metadata lại quan trọng trong vector store?",
+    "expected_answer": "Metadata quan trọng vì nó có thể giúp lọc các không gian tìm kiếm, cải thiện độ chính xác, giảm nhiễu và ngăn ứng dụng hiển thị văn bản từ các phòng ban sai hoặc tài liệu lỗi thời.",
+    "context": "When a user asks a question about a specific domain, metadata filters can narrow the search space and improve precision. ... This filtering step reduces noise and can prevent the application from surfacing text from the wrong department or outdated material.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Hãy cho một ví dụ về cách metadata có thể được sử dụng để lọc tìm kiếm.",
+    "expected_answer": "Một trợ lý hỗ trợ có thể giới hạn việc truy xuất chỉ các hướng dẫn khắc phục sự cố công khai, trong khi một công cụ phân tích nội bộ có thể tìm kiếm các bài ghi nhớ kỹ thuật và tài liệu sự cố.",
+    "context": "For example, a support assistant might restrict retrieval to only public troubleshooting guides, while an internal analyst tool might search engineering postmortems and incident documentation.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Những rủi ro phổ biến nào có thể dẫn đến kết quả sai lệch trong hệ thống vector store?",
+    "expected_answer": "Các rủi ro phổ biến bao gồm phân chia chunk kém, embeddings chất lượng thấp, thiếu metadata và các phương pháp đánh giá yếu.",
+    "context": "Poor chunking, low-quality embeddings, missing metadata, and weak evaluation practices can all cause misleading results.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Làm thế nào để đảm bảo chất lượng truy xuất tốt trong hệ thống AI?",
+    "expected_answer": "Cần kiểm tra chất lượng truy xuất bằng các truy vấn thực tế, so sánh tìm kiếm đã lọc và chưa lọc, đồng thời kiểm tra các chunk thực tế được trả về bởi hệ thống. Chuẩn bị dữ liệu cẩn thận là yếu tố quan trọng.",
+    "context": "That is why teams should test retrieval quality with realistic queries, compare filtered versus unfiltered search, and inspect the actual chunks returned by the system. Good retrieval is a product of careful data preparation, not just a database choice.",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "reasoning",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Ai là người chịu trách nhiệm chính cho việc triển khai một vector store hiệu quả?",
+    "expected_answer": "Tài liệu không đề cập cụ thể ai là người chịu trách nhiệm chính, nhưng nhấn mạnh tầm quan trọng của sự chuẩn bị dữ liệu cẩn thận.",
+    "context": "",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "adversarial",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Ưu điểm chính của việc sử dụng vector store là gì?",
+    "expected_answer": "Ưu điểm chính là khả năng hỗ trợ tìm kiếm ngữ nghĩa, hệ thống đề xuất, phân cụm và tạo sinh tăng cường truy xuất.",
+    "context": "In practical AI systems, a vector store is often used to support semantic search, recommendation, clustering workflows, and retrieval-augmented generation.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Trong giai đoạn thứ ba của quy trình tìm kiếm vector, chúng ta làm gì?",
+    "expected_answer": "Trong giai đoạn thứ ba, chúng ta lưu trữ vector và siêu dữ liệu để có thể tìm kiếm và lọc các bản ghi.",
+    "context": "Store the vector and metadata so records can be searched and filtered.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vector_store_notes.md"
+    }
+}\n{
+    "question": "Vai trò chính của retrieval trong trợ lý tri thức nội bộ là gì?",
+    "expected_answer": "Tìm ra những đoạn tài liệu phù hợp nhất trước khi mô hình ngôn ngữ tạo câu trả lời.",
+    "context": "Trong một hệ thống trợ lý tri thức nội bộ, retrieval đóng vai trò tìm ra những đoạn tài liệu phù hợp nhất trước khi mô hình ngôn ngữ tạo câu trả lời.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Tại sao chất lượng chunking lại ảnh hưởng đến chất lượng retrieval?",
+    "expected_answer": "Nếu chunk quá ngắn, hệ thống có thể trả về các câu rời rạc thiếu ngữ cảnh. Nếu chunk quá dài, nhiều ý không liên quan sẽ bị gộp lại, làm giảm độ chính xác của kết quả.",
+    "context": "Chất lượng chunking ảnh hưởng trực tiếp đến chất lượng retrieval. Nếu chunk quá ngắn, hệ thống có thể trả về các câu rời rạc thiếu ngữ cảnh. Nếu chunk quá dài, nhiều ý không liên quan sẽ bị gộp lại, làm giảm độ chính xác của kết quả.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Chiến lược chunking nào được nhiều nhóm ưu tiên và tại sao?",
+    "expected_answer": "Chiến lược recursive chunking được ưu tiên để tách theo đoạn trước, rồi mới tách nhỏ hơn khi cần.",
+    "context": "Vì vậy, nhiều nhóm chọn chiến lược recursive chunking để ưu tiên tách theo đoạn, rồi mới tách nhỏ hơn khi cần.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Metadata có thể giúp hệ thống retrieval như thế nào?",
+    "expected_answer": "Metadata có thể giúp hệ thống tránh lấy nhầm các tài liệu không liên quan dựa trên các nhãn như phòng ban, ngôn ngữ, độ nhạy cảm, hoặc ngày cập nhật.",
+    "context": "Ví dụ, một công ty có thể gắn nhãn tài liệu theo phòng ban, ngôn ngữ, độ nhạy cảm, hoặc ngày cập nhật. Khi người dùng hỏi về tài liệu kỹ thuật bằng tiếng Việt, bộ lọc metadata có thể giúp hệ thống tránh lấy nhầm các tài liệu marketing hoặc tài liệu tiếng Anh không liên quan.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Kể tên ít nhất ba loại lỗi thường gặp trong quá trình retrieval.",
+    "expected_answer": "Các lỗi thường gặp bao gồm tài liệu cũ xếp hạng cao, từ khóa trong câu hỏi không khớp với cách diễn đạt trong tài liệu, hoặc embedding model chưa xử lý tốt nội dung song ngữ.",
+    "context": "Một số lỗi thường gặp là tài liệu cũ vẫn xếp hạng cao, từ khóa trong câu hỏi không khớp với cách diễn đạt trong tài liệu, hoặc embedding model chưa xử lý tốt nội dung song ngữ.",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "fact-check",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Làm thế nào để cải thiện dữ liệu và chiến lược truy xuất của hệ thống retrieval?",
+    "expected_answer": "Đội ngũ phát triển nên kiểm thử bằng các truy vấn thực tế, xem trực tiếp các chunk được trả về, và ghi nhận failure cases để cải thiện dữ liệu cũng như chiến lược truy xuất.",
+    "context": "Vì vậy, đội ngũ phát triển nên kiểm thử bằng các truy vấn thực tế, xem trực tiếp các chunk được trả về, và ghi nhận failure cases để cải thiện dữ liệu cũng như chiến lược truy xuất.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "reasoning",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Quy trình xử lý tài liệu trong retrieval bắt đầu như thế nào?",
+    "expected_answer": "Bắt đầu từ việc thu thập tài liệu, làm sạch nội dung, chia nhỏ thành các chunk có ý nghĩa, sau đó tạo embedding cho từng chunk.",
+    "context": "Một pipeline retrieval điển hình bắt đầu từ việc thu thập tài liệu, làm sạch nội dung, chia nhỏ thành các chunk có ý nghĩa, sau đó tạo embedding cho từng chunk.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Khi người dùng đặt câu hỏi, hệ thống retrieval hoạt động ra sao?",
+    "expected_answer": "Hệ thống tạo embedding cho câu hỏi và so sánh với các vector đã lưu để tìm các đoạn gần nhất về mặt ngữ nghĩa.",
+    "context": "Khi người dùng đặt câu hỏi, hệ thống sẽ tạo embedding cho câu hỏi đó và so sánh với các vector đã lưu để tìm các đoạn gần nhất về mặt ngữ nghĩa.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Trí tuệ nhân tạo AI có thể giúp tìm kiếm các bộ phim hài lãng mạn không?",
+    "expected_answer": "Thông tin này không có trong tài liệu được cung cấp.",
+    "context": "",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "out-of-context",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Nếu một chunk quá dài, nó sẽ làm tăng hay giảm độ chính xác của kết quả retrieval?",
+    "expected_answer": "Nếu chunk quá dài, nhiều ý không liên quan sẽ bị gộp lại, làm giảm độ chính xác của kết quả.",
+    "context": "Nếu chunk quá dài, nhiều ý không liên quan sẽ bị gộp lại, làm giảm độ chính xác của kết quả.",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "adversarial",
+        "source_doc": "vi_retrieval_notes.md"
+    }
+}\n{
+    "question": "Ai có trách nhiệm thiết kế việc đánh giá học phần?",
+    "expected_answer": "Giảng viên dạy học phần.",
+    "context": "Giảng viên dạy học phần có trách nhiệm thiết kế đánh giá học phần liên quan phù hợp với chuẩn đầu ra và tuân thủ các nguyên tắc và tiêu chuẩn của Nhà trường.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Kế hoạch đánh giá học phần cần được quy định ở đâu và cung cấp cho sinh viên khi nào?",
+    "expected_answer": "Kế hoạch đánh giá phải được quy định trong đề cương chi tiết học phần và cung cấp cho sinh viên trước khi đến lớp.",
+    "context": "Kế hoạch đánh giá (phương pháp, hình thức, nhiệm vụ và tỷ trọng các cấu phần đánh giá) cho một học phần phải được quy định trong đề cương chi tiết học phần và cung cấp cho sinh viên trước khi đến lớp.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Tỷ trọng tối đa của đánh giá trực tuyến đối với tổng điểm trọng số của học phần là bao nhiêu?",
+    "expected_answer": "Đánh giá trực tuyến đóng góp không quá 50% vào tổng điểm trọng số của học phần đó.",
+    "context": "Đánh giá trực tuyến có thể được thực hiện nếu đảm bảo trung thực, công bằng và khách quan như đánh giá trực tiếp và sẽ đóng góp không quá 50% vào tổng điểm trọng số của học phần đó.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Trách nhiệm của mỗi học sinh về việc tham dự lớp học là gì?",
+    "expected_answer": "Mỗi học sinh có trách nhiệm tham dự tất cả các lớp học theo lịch trình trừ khi có sự đồng ý của người hướng dẫn khóa học.",
+    "context": "Mỗi học sinh có trách nhiệm tham dự tất cả các lớp học theo lịch trình trừ khi có sự đồng ý của người hướng dẫn khóa học.",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Nếu học sinh không đăng ký tham dự bằng các phương pháp được duyệt, trách nhiệm của họ là gì?",
+    "expected_answer": "Học sinh đó có trách nhiệm cung cấp bằng chứng về việc họ đi học để được tín chỉ.",
+    "context": "Nếu một học sinh không đăng ký bằng các phương pháp đã được phê duyệt, thì học sinh đó có trách nhiệm cung cấp bằng chứng về việc họ đi học để được tín chỉ.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Hậu quả của việc không tham dự các buổi học bắt buộc là gì?",
+    "expected_answer": "Việc không tham dự các buổi học bắt buộc sẽ dẫn đến việc tự động vắng mặt không lý do, trừ khi người hướng dẫn khóa học cho phép ngoại lệ.",
+    "context": "Việc không tham dự các buổi học bắt buộc sẽ dẫn đến việc tự động vắng mặt không lý do trừ khi người hướng dẫn khóa học cho phép ngoại lệ.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Ai chịu trách nhiệm cho tất cả các nội dung được đề cập trong lớp học khi học sinh vắng mặt?",
+    "expected_answer": "Học sinh chịu trách nhiệm cho tất cả các nội dung được đề cập.",
+    "context": "Học sinh chịu trách nhiệm cho tất cả các nội dung được đề cập; người hướng dẫn thường sẽ không thực hiện các khoản phụ cấp để đáp ứng sự vắng mặt không lý do.",
+    "metadata": {
+        "difficulty": "medium",
+        "type": "fact-check",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Học sinh cần làm gì để đảm bảo tính chuyên nghiệp trong các hoạt động giáo dục?",
+    "expected_answer": "Học sinh phải đến đúng giờ, ở lại trong suốt thời gian hoạt động và không gây rối môi trường giáo dục.",
+    "context": "Học sinh phải đến đúng giờ cho tất cả các hoạt động giáo dục, ở lại trong suốt thời gian của hoạt động và không gây ra hoặc tham gia gây rối cho bất kỳ môi trường giáo dục nào trong suốt hoạt động giáo dục. Kỳ vọng này được mã hóa trong quy tắc ứng xử của học sinh và là một thành phần thiết yếu của tính chuyên nghiệp.",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "reasoning",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Nếu một học sinh quên đăng ký điểm danh điện tử, liệu giảng viên có tự động cộng điểm chuyên cần cho học sinh đó không?",
+    "expected_answer": "Không, nếu học sinh không đăng ký bằng các phương pháp đã được duyệt, thì học sinh đó có trách nhiệm cung cấp bằng chứng về việc họ đi học để được tín chỉ.",
+    "context": "Nếu một học sinh không đăng ký bằng các phương pháp đã được phê duyệt, thì học sinh đó có trách nhiệm cung cấp bằng chứng về việc họ đi học để được tín chỉ.",
+    "metadata": {
+        "difficulty": "hard",
+        "type": "adversarial",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n{
+    "question": "Chính sách nghỉ phép năm của sinh viên là gì?",
+    "expected_answer": "Thông tin này không có trong tài liệu.",
+    "context": "",
+    "metadata": {
+        "difficulty": "easy",
+        "type": "out-of-context",
+        "source_doc": "vin_policy_trimm.md"
+    }
+}\n
