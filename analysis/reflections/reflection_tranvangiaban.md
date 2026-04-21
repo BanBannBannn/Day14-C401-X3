@@ -15,7 +15,7 @@
 #### Các thành phần chính:
 ```python
 class LLMJudge:
-  ✅ Async concurrent evaluation (GPT-4o + Claude-3.5-sonnet)
+  ✅ Async concurrent evaluation (GPT-4o + Nvidia Nemotron-3-Super-120B via OpenRouter)
   ✅ Agreement Rate calculation (độ đồng thuận giữa 2 judges)
   ✅ Automatic disagreement resolution (xử lý xung đột điểm số)
   ✅ Position Bias detection (kiểm tra độ khách quan)
@@ -184,22 +184,23 @@ def _calculate_agreement_rate(self, score_a: float, score_b: float) -> float:
 
 ---
 
-### 3.4 Vấn đề 4: Inconsistent Claude Response Format
+### 3.4 Vấn đề 4: Multi-API Client Integration
 
-**Vấn đề:** Claude và GPT trả về JSON với key naming khác nhau:
+**Vấn đề:** GPT-4o dùng OpenAI API, Nvidia Nemotron dùng OpenRouter API (cùng interface AsyncOpenAI nhưng khác base_url):
 ```python
-# GPT: {"accuracy_score": 5, ...}
-# Claude: {"accuracy": 5, ...}  # Key khác!
+# OpenAI client
+self.openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# OpenRouter client (cùng AsyncOpenAI nhưng khác base_url)
+self.anthropic_client = AsyncOpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1",
+)
 ```
 
-**Giải pháp:** Normalize response structure
-```python
-def _normalize_response(self, eval_dict: Dict) -> Dict:
-    return {
-        "accuracy_score": eval_dict.get("accuracy_score") or eval_dict.get("accuracy"),
-        # ... normalize all keys
-    }
-```
+**Giải pháp:** Sử dụng AsyncOpenAI cho cả 2 clients với base_url khác nhau:
+- OpenAI API: default endpoint
+- OpenRouter API: `https://openrouter.ai/api/v1` (support nhiều models)
+- Kết quả: Unified interface, dễ switch models mà không cần đổi code logic
 
 ---
 
@@ -207,8 +208,8 @@ def _normalize_response(self, eval_dict: Dict) -> Dict:
 
 | Chỉ số | Giá trị | Status |
 |-------|--------|--------|
-| **Consensus Implementation** | ✅ Complete | 2 judges (GPT + Claude) |
-| **Async Concurrency** | ✅ 50% faster | 2 evals song song |
+| **Consensus Implementation** | ✅ Complete | 2 judges (GPT-4o + Nvidia Nemotron) |
+| **Async Concurrency** | ✅ 50% faster | 2 evals song song (OpenRouter + OpenAI) |
 | **JSON Parsing Success Rate** | ✅ 99.2% | Robust regex + fallback |
 | **Error Recovery** | ✅ 100% | Fallback scores khi API fail |
 | **Position Bias Detection** | ✅ Implemented | check_position_bias() method |
