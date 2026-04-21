@@ -18,5 +18,23 @@ class RetrievalEvaluator:
         return 0.0
 
     async def evaluate_batch(self, dataset: List[Dict]) -> Dict:
-        # Placeholder logic
-        return {"avg_hit_rate": 0.85, "avg_mrr": 0.72}
+        total_hit_rate = 0.0
+        total_mrr = 0.0
+        count = len(dataset)
+
+        if count == 0:
+            return {"avg_hit_rate": 0.0, "avg_mrr": 0.0}
+
+        for item in dataset:
+            # Giả định dataset có định dạng từ kết quả chạy Agent thực tế 
+            expected = item.get('expected_retrieval_ids', [])
+            actual = item.get('retrieved_ids', [])
+            
+            total_hit_rate += self.calculate_hit_rate(expected, actual)
+            total_mrr += self.calculate_mrr(expected, actual)
+
+        return {
+            "avg_hit_rate": total_hit_rate / count,
+            "avg_mrr": total_mrr / count,
+            "sample_size": count
+        }
