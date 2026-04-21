@@ -4,7 +4,6 @@ import json
 import re
 from typing import Dict, Any, Tuple
 from openai import AsyncOpenAI
-from anthropic import Anthropic
 
 class LLMJudge:
     """
@@ -12,13 +11,16 @@ class LLMJudge:
     Tính toán hệ số đồng thuận (Agreement Rate) và xử lý xung đột điểm số tự động.
     """
     
-    def __init__(self, gpt_model: str = "gpt-4o", claude_model: str = "claude-3-5-sonnet-20241022"):
+    def __init__(self, gpt_model: str = "gpt-4o", nvidia_model: str = "nvidia/nemotron-3-super-120b-a12b:free"):
         self.gpt_model = gpt_model
-        self.claude_model = claude_model
+        self.claude_model = nvidia_model
         
         # Khởi tạo clients
         self.openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.anthropic_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+        self.anthropic_client = AsyncOpenAI(
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            base_url="https://openrouter.ai/api/v1",
+        )
         
         # Định nghĩa rubrics chi tiết
         self.rubrics = {
@@ -131,19 +133,21 @@ class LLMJudge:
             return self._fallback_score("gpt-4o", str(e))
     
     async def _call_claude_judge(self, question: str, answer: str, ground_truth: str) -> Dict[str, Any]:
-        """Gọi Claude-3.5 để đánh giá."""
+        """Gọi Claude-3.5 qua OpenRouter để đánh giá."""
         prompt = self._build_evaluation_prompt(question, answer, ground_truth)
-        
+
         try:
-            message = self.anthropic_client.messages.create(
+            response = await self.anthropic_client.chat.completions.create(
                 model=self.claude_model,
-                max_tokens=1000,
                 messages=[
+                    {"role": "system", "content": "Bạn là một chuyên gia đánh giá AI độc lập."},
                     {"role": "user", "content": prompt}
-                ]
+                ],
+                temperature=0.7,
+                max_tokens=1000,
             )
-            
-            content = message.content[0].text
+
+            content = response.choices[0].message.content
             # Extract JSON from response
             json_match = re.search(r'\{.*\}', content, re.DOTALL)
             if json_match:

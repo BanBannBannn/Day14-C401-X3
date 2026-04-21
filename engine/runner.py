@@ -42,6 +42,7 @@ class BenchmarkRunner:
         results = []
         for i in range(0, len(dataset), batch_size):
             batch = dataset[i:i + batch_size]
+            await asyncio.sleep(60)
             tasks = [self.run_single_test(case) for case in batch]
             batch_results = await asyncio.gather(*tasks)
             results.extend(batch_results)
